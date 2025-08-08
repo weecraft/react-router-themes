@@ -1,0 +1,42 @@
+{
+  "name": "ts-package-starter",
+  "version": "1.0.0",
+  "description": "_\"My personal website to connect and share something with client and audience\"_",
+  "homepage": "https://github.com/nyomansunima/ts-package-starter#readme",
+  "keywords": [],
+  "author": "Nyoman Sunima",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nyomansunima/ts-package-starter/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nyomansunima/ts-package-starter.git"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js",
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "format": "prettier . --write --list-different",
+    "lint": "eslint . --fix",
+    "test": "vitest",
+    "build": "tsdown",
+    "dev": "tsdown --watch"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^5.2.0",
+    "eslint": "^9.32.0",
+    "prettier": "^3.6.2",
+    "tsdown": "^0.13.3",
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4"
+  }
+}
