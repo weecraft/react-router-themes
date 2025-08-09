@@ -7,4 +7,14 @@ import {
   typescript,
 } from "@antfu/eslint-config"
 
-export default combine(ignores(), javascript(), node(), imports(), typescript())
+export default combine(
+  ignores(),
+  javascript(),
+  node(),
+  imports({
+    overrides: {
+      "unused-imports/no-unused-vars": "off",
+    },
+  }),
+  typescript(),
+)
