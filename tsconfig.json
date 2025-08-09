@@ -1,10 +1,10 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "lib": ["esnext"],
+    "lib": ["esnext", "dom"],
     "moduleDetection": "force",
     "module": "esnext",
-    "moduleResolution": "bundler",
+    "moduleResolution": "node",
     "resolveJsonModule": true,
     "strict": true,
     "noUnusedLocals": true,
@@ -15,7 +15,10 @@
     "verbatimModuleSyntax": true,
     "skipLibCheck": true,
     "strictNullChecks": true,
-    "noEmit": true
+    "noEmit": true,
+    "allowJs": true,
+    "jsx": "react"
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
 }
