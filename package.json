@@ -1,24 +1,33 @@
 {
-  "name": "ts-package-starter",
+  "name": "react-router-themes",
   "version": "1.0.0",
-  "description": "_\"My personal website to connect and share something with client and audience\"_",
-  "homepage": "https://github.com/nyomansunima/ts-package-starter#readme",
-  "keywords": [],
+  "description": "Modern and simple react router theme supports. Enable changes theme with simple block code with no flashing.",
+  "keywords": [
+    "react-router",
+    "theme",
+    "dark mode",
+    "theme switcher",
+    "remix",
+    "react router v7"
+  ],
   "author": "Nyoman Sunima",
-  "license": "ISC",
+  "license": "MIT",
+  "homepage": "https://github.com/weecraft/react-router-themes#readme",
   "bugs": {
-    "url": "https://github.com/nyomansunima/ts-package-starter/issues"
+    "url": "https://github.com/weecraft/react-router-themes/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nyomansunima/ts-package-starter.git"
+    "url": "git+https://github.com/weecraft/react-router-themes.git"
   },
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "exports": {
-    ".": "./dist/index.js",
-    "./package.json": "./package.json"
+    ".": "./dist/index.js"
   },
   "publishConfig": {
     "access": "public"
@@ -31,11 +40,19 @@
     "build": "tsdown",
     "dev": "tsdown --watch"
   },
+  "peerDependencies": {
+    "react": "^16 || ^17 || ^18 || ^19",
+    "react-dom": "^16 || ^17 || ^18 || ^19"
+  },
   "devDependencies": {
     "@antfu/eslint-config": "^5.2.0",
-    "eslint": "^9.32.0",
+    "@types/react": "^19.1.9",
+    "@types/react-dom": "^19.1.7",
+    "eslint": "^9.33.0",
     "prettier": "^3.6.2",
-    "tsdown": "^0.13.3",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "tsdown": "^0.13.4",
     "typescript": "^5.9.2",
     "vitest": "^3.2.4"
   }
