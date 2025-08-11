@@ -19,13 +19,13 @@ permissions:
 
 jobs:
   create-release:
-    name: Create release
+    name: Create github release
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Create Release
+      - name: Create release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref_name }}
@@ -42,6 +42,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
 
       - name: Publish package to npm
         uses: JS-DevTools/npm-publish@v3
