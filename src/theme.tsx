@@ -1,89 +1,66 @@
 import * as React from "react"
-import { script } from "./utils"
-import type { Attribute, ThemeProviderProps, UseThemeProps } from "./types"
+import {
+  disableAnimation,
+  getSystemTheme,
+  getTheme,
+  saveToLocalStorage,
+  script,
+} from "./utils"
+import type { Attribute, ThemeProviderProps } from "./types"
+import { COLOR_SCHEMAS, DEFAULT_THEMES, MEDIA } from "./constants"
+import { ThemeContext } from "./provider"
 
-const colorSchemes = ["light", "dark"]
-const defaultThemes = ["light", "dark"]
-const MEDIA = "(prefers-color-scheme: dark)"
-const isServer = typeof window === "undefined"
+function ThemeScript({
+  forcedTheme,
+  storageKey,
+  attribute,
+  enableSystem,
+  enableColorScheme,
+  defaultTheme,
+  value,
+  themes,
+  nonce,
+  scriptProps,
+}: Omit<ThemeProviderProps, "children"> & { defaultTheme: string }) {
+  const scriptArgs = JSON.stringify([
+    attribute,
+    storageKey,
+    defaultTheme,
+    forcedTheme,
+    themes,
+    value,
+    enableSystem,
+    enableColorScheme,
+  ]).slice(1, -1)
 
-function getTheme(key: string, fallback?: string) {
-  if (isServer) return undefined
-  let theme
-  try {
-    theme = localStorage.getItem(key) || undefined
-  } catch (e) {
-    // Unsupported
-  }
-  return theme || fallback
-}
-
-function disableAnimation(nonce?: string) {
-  const css = document.createElement("style")
-  if (nonce) css.setAttribute("nonce", nonce)
-  css.appendChild(
-    document.createTextNode(
-      `*,*::before,*::after{-webkit-transition:none!important;-moz-transition:none!important;-o-transition:none!important;-ms-transition:none!important;transition:none!important}`,
-    ),
+  return (
+    <script
+      {...scriptProps}
+      suppressHydrationWarning
+      nonce={typeof window === "undefined" ? nonce : ""}
+      dangerouslySetInnerHTML={{
+        __html: `(${script.toString()})(${scriptArgs})`,
+      }}
+    />
   )
-  document.head.appendChild(css)
-
-  return () => {
-    // Force restyle
-    ;(() => window.getComputedStyle(document.body))()
-
-    // Wait for next tick before removing
-    setTimeout(() => {
-      document.head.removeChild(css)
-    }, 1)
-  }
 }
 
-function getSystemTheme(e?: MediaQueryList | MediaQueryListEvent) {
-  if (!e) e = window.matchMedia(MEDIA)
-  const isDark = e.matches
-  const systemTheme = isDark ? "dark" : "light"
-  return systemTheme
-}
+export const ThemeScriptMemo = React.memo(ThemeScript)
 
-function saveToLS(storageKey: string, value: string) {
-  try {
-    localStorage.setItem(storageKey, value)
-  } catch (e) {
-    // Unsupported
-  }
-}
-
-const ThemeContext = React.createContext<UseThemeProps | undefined>(undefined)
-
-const defaultContext: UseThemeProps = { setTheme: (_) => {}, themes: [] }
-
-export function useTheme() {
-  return React.useContext(ThemeContext) ?? defaultContext
-}
-
-export const ThemeProvider = (props: ThemeProviderProps) => {
-  const context = React.useContext(ThemeContext)
-
-  // Ignore nested context providers, just passthrough children
-  if (context) return <>{props.children}</>
-  return <Theme {...props} />
-}
-
-const Theme = ({
+export function Theme({
   forcedTheme,
   disableTransitionOnChange = false,
   enableSystem = true,
   enableColorScheme = true,
   storageKey = "theme",
-  themes = defaultThemes,
+  themes = DEFAULT_THEMES,
   defaultTheme = enableSystem ? "system" : "light",
   attribute = "data-theme",
   value,
   children,
   nonce,
   scriptProps,
-}: ThemeProviderProps) => {
+}: ThemeProviderProps) {
   const [theme, setThemeState] = React.useState(() =>
     getTheme(storageKey, defaultTheme),
   )
@@ -93,7 +70,7 @@ const Theme = ({
   const attrs = !value ? themes : Object.values(value)
 
   const applyTheme = React.useCallback(
-    (theme) => {
+    (theme: string | undefined) => {
       let resolved = theme
       if (!resolved) return
 
@@ -123,13 +100,13 @@ const Theme = ({
       else handleAttribute(attribute)
 
       if (enableColorScheme) {
-        const fallback = colorSchemes.includes(defaultTheme)
+        const fallback = COLOR_SCHEMAS.includes(defaultTheme)
           ? defaultTheme
-          : null
-        const colorScheme = colorSchemes.includes(resolved)
+          : "light"
+        const colorScheme = COLOR_SCHEMAS.includes(resolved)
           ? resolved
           : fallback
-        // @ts-ignore
+
         d.style.colorScheme = colorScheme
       }
 
@@ -143,13 +120,13 @@ const Theme = ({
       setThemeState((prevTheme) => {
         const newTheme = value(prevTheme)
 
-        saveToLS(storageKey, newTheme)
+        saveToLocalStorage(storageKey, newTheme)
 
         return newTheme
       })
     } else {
       setThemeState(value)
-      saveToLS(storageKey, value)
+      saveToLocalStorage(storageKey, value)
     }
   }, [])
 
@@ -217,7 +194,7 @@ const Theme = ({
 
   return (
     <ThemeContext.Provider value={providerValue}>
-      <ThemeScript
+      <ThemeScriptMemo
         {...{
           forcedTheme,
           storageKey,
@@ -236,40 +213,3 @@ const Theme = ({
     </ThemeContext.Provider>
   )
 }
-
-export const ThemeScript = React.memo(
-  ({
-    forcedTheme,
-    storageKey,
-    attribute,
-    enableSystem,
-    enableColorScheme,
-    defaultTheme,
-    value,
-    themes,
-    nonce,
-    scriptProps,
-  }: Omit<ThemeProviderProps, "children"> & { defaultTheme: string }) => {
-    const scriptArgs = JSON.stringify([
-      attribute,
-      storageKey,
-      defaultTheme,
-      forcedTheme,
-      themes,
-      value,
-      enableSystem,
-      enableColorScheme,
-    ]).slice(1, -1)
-
-    return (
-      <script
-        {...scriptProps}
-        suppressHydrationWarning
-        nonce={typeof window === "undefined" ? nonce : ""}
-        dangerouslySetInnerHTML={{
-          __html: `(${script.toString()})(${scriptArgs})`,
-        }}
-      />
-    )
-  },
-)
