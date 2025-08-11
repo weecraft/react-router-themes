@@ -1,6 +1,6 @@
 {
   "name": "react-router-themes",
-  "version": "0.0.1",
+  "version": "1.0.1",
   "type": "module",
   "description": "Modern and simple react router theme supports. Enable changes theme with simple block code with no flashing.",
   "keywords": [
@@ -28,6 +28,9 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/weecraft/react-router-themes.git"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "main": "./dist/index.js",
   "module": "./dist/index.js",
