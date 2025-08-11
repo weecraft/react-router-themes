@@ -1,6 +1,6 @@
 {
   "name": "react-router-themes",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
   "description": "Modern and simple react router theme supports. Enable changes theme with simple block code with no flashing.",
   "keywords": [
@@ -46,8 +46,9 @@
     "format": "prettier . --write --list-different",
     "lint": "eslint . --fix",
     "test": "vitest",
-    "build": "tsdown",
     "dev": "tsdown --watch",
+    "build": "tsdown",
+    "version": "bumpp",
     "clean": "rm -rf dist"
   },
   "peerDependencies": {
@@ -58,6 +59,7 @@
     "@antfu/eslint-config": "^5.2.0",
     "@types/react": "^19.1.9",
     "@types/react-dom": "^19.1.7",
+    "bumpp": "^10.2.2",
     "eslint": "^9.33.0",
     "prettier": "^3.6.2",
     "react": "^19.1.1",
