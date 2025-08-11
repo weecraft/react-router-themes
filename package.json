@@ -1,6 +1,6 @@
 {
   "name": "react-router-themes",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
   "description": "Modern and simple react router theme supports. Enable changes theme with simple block code with no flashing.",
   "keywords": [
