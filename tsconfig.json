@@ -17,6 +17,7 @@
     "strictNullChecks": true,
     "noEmit": true,
     "allowJs": true,
+    "noImplicitAny": false,
     "jsx": "react"
   },
   "include": ["src"],
