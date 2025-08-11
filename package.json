@@ -48,7 +48,7 @@
     "test": "vitest",
     "dev": "tsdown --watch",
     "build": "tsdown",
-    "version": "bumpp",
+    "release": "bumpp",
     "clean": "rm -rf dist"
   },
   "peerDependencies": {
