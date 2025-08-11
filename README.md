@@ -1,8 +1,6 @@
 # React Router Themes
 
-_"Theme switching in react router made simple"_
-
-Modern and simple react router theme supports. Enable changes theme with simple block code with no flashing.
+Theme switching in react router made simple. Modern and simple react router theme supports. Enable changes theme with simple block code with no flashing.
 
 - ✅ Perfect dark mode with 2 lines of code
 - ✅ System settings with prefers-color-scheme
@@ -43,7 +41,7 @@ That's it. Now, you're free.
 For more detail, You can check the docs:
 
 - [License](./LICENSE)
-- [Code of conduct](./CODE_OF_CONDUCT.md)lgi
+- [Code of conduct](./CODE_OF_CONDUCT.md)
 - [Contributing](./CONTRIBUTING.md)
 
 ## Thanks
