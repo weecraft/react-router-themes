@@ -1,16 +1,25 @@
 {
   "name": "react-router-themes",
   "version": "1.0.0",
+  "type": "module",
   "description": "Modern and simple react router theme supports. Enable changes theme with simple block code with no flashing.",
   "keywords": [
     "react-router",
     "theme",
     "dark mode",
+    "dark theme",
     "theme switcher",
     "remix",
-    "react router v7"
+    "react router v7",
+    "react theme"
   ],
-  "author": "Nyoman Sunima",
+  "contributors": [
+    {
+      "name": "Nyoman Sunima",
+      "email": "nyomansunima@gmail.com",
+      "url": "https://nyomansunima.com"
+    }
+  ],
   "license": "MIT",
   "homepage": "https://github.com/weecraft/react-router-themes#readme",
   "bugs": {
@@ -38,7 +47,8 @@
     "lint": "eslint . --fix",
     "test": "vitest",
     "build": "tsdown",
-    "dev": "tsdown --watch"
+    "dev": "tsdown --watch",
+    "clean": "rm -rf dist"
   },
   "peerDependencies": {
     "react": "^16 || ^17 || ^18 || ^19",
