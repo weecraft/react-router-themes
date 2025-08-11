@@ -55,3 +55,14 @@ export interface ThemeProviderProps extends React.PropsWithChildren<unknown> {
   /** Props to pass the inline script */
   scriptProps?: ScriptProps
 }
+
+export interface ScriptFuncProps {
+  attribute: string | string[]
+  storageKey: string
+  defaultTheme: string
+  forcedTheme?: string
+  themes: string[]
+  value?: Record<string, string>
+  enableSystem: boolean
+  enableColorScheme: boolean
+}
