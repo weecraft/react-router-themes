@@ -6,7 +6,7 @@ export default defineConfig([
     platform: "neutral",
     sourcemap: false,
     minify: true,
-    bundle: true,
+    unbundle: false,
     dts: true,
     clean: true,
     format: ["es"],
