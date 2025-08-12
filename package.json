@@ -61,7 +61,7 @@
     "prettier": "^3.6.2",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
-    "tsdown": "^0.13.4",
+    "tsdown": "^0.14.1",
     "typescript": "^5.9.2",
     "vitest": "^3.2.4"
   }
