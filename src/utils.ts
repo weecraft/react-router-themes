@@ -40,7 +40,7 @@ export function script({
     }
   }
 
-  function getSystemTheme() {
+  function getSystemColorTheme() {
     return window.matchMedia("(prefers-color-scheme: dark)").matches
       ? "dark"
       : "light"
@@ -52,18 +52,20 @@ export function script({
     try {
       const themeName = localStorage.getItem(storageKey) || defaultTheme
       const isSystem = enableSystem && themeName === "system"
-      const theme = isSystem ? getSystemTheme() : themeName
+      const theme = isSystem ? getSystemColorTheme() : themeName
       updateDOM(theme)
     } catch (e) {}
   }
 }
 
 export function getTheme(key: string, fallback?: string) {
-  let theme: string | undefined
   if (isServer) return undefined
+
+  let theme: string | undefined
   try {
     theme = localStorage.getItem(key) || undefined
   } catch (e) {}
+
   return theme || fallback
 }
 
