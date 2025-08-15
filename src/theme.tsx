@@ -10,42 +10,42 @@ import type { Attribute, ThemeProviderProps } from "./types"
 import { COLOR_SCHEMAS, DEFAULT_THEMES, MEDIA } from "./constants"
 import { ThemeContext } from "./provider"
 
-function ThemeScript({
-  forcedTheme,
-  storageKey,
-  attribute,
-  enableSystem,
-  enableColorScheme,
-  defaultTheme,
-  value,
-  themes,
-  nonce,
-  scriptProps,
-}: Omit<ThemeProviderProps, "children"> & { defaultTheme: string }) {
-  const scriptArgs = JSON.stringify([
-    attribute,
-    storageKey,
-    defaultTheme,
+const ThemeScript = React.memo(
+  ({
     forcedTheme,
-    themes,
-    value,
+    storageKey,
+    attribute,
     enableSystem,
     enableColorScheme,
-  ]).slice(1, -1)
+    defaultTheme,
+    value,
+    themes,
+    nonce,
+    scriptProps,
+  }: Omit<ThemeProviderProps, "children"> & { defaultTheme: string }) => {
+    const scriptArgs = JSON.stringify([
+      attribute,
+      storageKey,
+      defaultTheme,
+      forcedTheme,
+      themes,
+      value,
+      enableSystem,
+      enableColorScheme,
+    ]).slice(1, -1)
 
-  return (
-    <script
-      {...scriptProps}
-      suppressHydrationWarning
-      nonce={typeof window === "undefined" ? nonce : ""}
-      dangerouslySetInnerHTML={{
-        __html: `(${script.toString()})(${scriptArgs})`,
-      }}
-    />
-  )
-}
-
-export const ThemeScriptMemo = React.memo(ThemeScript)
+    return (
+      <script
+        {...scriptProps}
+        suppressHydrationWarning
+        nonce={typeof window === "undefined" ? nonce : ""}
+        dangerouslySetInnerHTML={{
+          __html: `(${script.toString()})(${scriptArgs})`,
+        }}
+      />
+    )
+  },
+)
 
 export function Theme({
   forcedTheme,
@@ -102,7 +102,7 @@ export function Theme({
       if (enableColorScheme) {
         const fallback = COLOR_SCHEMAS.includes(defaultTheme)
           ? defaultTheme
-          : "light"
+          : "null"
         const colorScheme = COLOR_SCHEMAS.includes(resolved)
           ? resolved
           : fallback
@@ -119,9 +119,7 @@ export function Theme({
     if (typeof value === "function") {
       setThemeState((prevTheme) => {
         const newTheme = value(prevTheme)
-
         saveToLocalStorage(storageKey, newTheme)
-
         return newTheme
       })
     } else {
@@ -142,29 +140,25 @@ export function Theme({
     [theme, forcedTheme],
   )
 
-  // Always listen to System preference
   React.useEffect(() => {
     const media = window.matchMedia(MEDIA)
 
-    // Intentionally use deprecated listener methods to support iOS & old browsers
     media.addListener(handleMediaQuery)
     handleMediaQuery(media)
 
     return () => media.removeListener(handleMediaQuery)
   }, [handleMediaQuery])
 
-  // localStorage event handling
   React.useEffect(() => {
     const handleStorage = (e: StorageEvent) => {
       if (e.key !== storageKey) {
         return
       }
 
-      // If default theme set, use it if localstorage === null (happens on local storage manual deletion)
       if (!e.newValue) {
         setTheme(defaultTheme)
       } else {
-        setThemeState(e.newValue) // Direct state update to avoid loops
+        setThemeState(e.newValue)
       }
     }
 
@@ -172,7 +166,6 @@ export function Theme({
     return () => window.removeEventListener("storage", handleStorage)
   }, [setTheme])
 
-  // Whenever theme or forcedTheme changes, apply it
   React.useEffect(() => {
     applyTheme(forcedTheme ?? theme)
   }, [forcedTheme, theme])
@@ -194,7 +187,7 @@ export function Theme({
 
   return (
     <ThemeContext.Provider value={providerValue}>
-      <ThemeScriptMemo
+      <ThemeScript
         {...{
           forcedTheme,
           storageKey,
